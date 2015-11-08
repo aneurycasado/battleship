@@ -22,6 +22,7 @@ app.factory("ShipFactory", ($rootScope, PlayerFactory, ConfigurationFactory, Gam
 			ships.push(newShip);
 			container.addChild(newShip.img);
 			PlayerFactory.shipsToPlace--;
+			PlayerFactory.player.ships.push(this.x.toString() + "," + this.y.toString())
 			$rootScope.$emit("shipPlaced");
 		}else if(GameFactory.game.state === "finishedPlacing"){
 			console.log("Can't place anymore");

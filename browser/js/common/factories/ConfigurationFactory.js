@@ -1,14 +1,14 @@
 app.factory('ConfigurationFactory', () => {
 	let canvasSettings = {
-		width: $(window).width(),
+		width: $(window).width()/2,
 		rows: 5,
 		cols: 5,
 		mapSettings: {}
 	}
 	canvasSettings.cellSize = canvasSettings.width / canvasSettings.cols;
-	canvasSettings.height = (canvasSettings.rows * canvasSettings.cellSize)/2;
-	canvasSettings.mapSettings.cellSize = canvasSettings.cellSize / 2;
-	canvasSettings.mapSettings.width = canvasSettings.width/2;
+	canvasSettings.height = (canvasSettings.rows * canvasSettings.cellSize);
+	canvasSettings.mapSettings.cellSize = canvasSettings.cellSize
+	canvasSettings.mapSettings.width = canvasSettings.width
 	canvasSettings.mapSettings.height = canvasSettings.height;
 	return canvasSettings;
 });

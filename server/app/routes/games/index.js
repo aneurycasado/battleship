@@ -34,15 +34,12 @@ router.post("/", (req,res) => {
 router.put("/:id", (req,res) => {
 	let gameID = req.params.id;
 	let guess = req.body.guess;
-	console.log("The guess",guess);
 	let hit = false;
 	Game.findOne({_id: gameID}).populate("player opponent")
 	.then((game) => {
 		let player = game.player;
 		let opponent = game.opponent;
 		player.guesses.push(guess);
-		console.log("Guess",guess);
-		console.log("Opponent ships", opponent.ships)
 		if(opponent.ships.indexOf(guess) !== -1){
 			hit = true;
 		}else{

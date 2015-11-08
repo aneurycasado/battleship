@@ -57,13 +57,15 @@ app.factory("ShipFactory", ($rootScope, PlayerFactory, ConfigurationFactory, Gam
 	}
 
 	const addOpponentsGuess = (guess) => {
-		console.log(guess);
-		console.log("add Opponents Guess");
 		let success = false;
 		let location = {x: parseInt(guess[0]), y: parseInt(guess[2])};
 		ships.forEach((ship) => {
 			if(ship.position.x === location.x && ship.position.y === location.y){
 				success = true;
+				PlayerFactory.shipsLeft--;
+				if(PlayerFactory.opponentHits === 10){
+					$rootScope.$emit("opponentWon");
+				}
 			}
 		});
 		let newGuess = new OpponentGuess(location.x, location.y, {success: success})

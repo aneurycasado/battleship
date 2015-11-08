@@ -11,19 +11,17 @@ app.factory("SpriteEventFactory", ($rootScope,ShipFactory, GuessFactory) => {
 	$rootScope.$on("playersTurn", () => {
 		placeGuess = true;
 	});
+	$rootScope.$on("gameOver", () => {
+		placeGuess = false;
+	})
 	const clickOnGridNode = function(){
-		console.log("clickOnGridNode");
 		if(drawShips){
-			console.log("drawShips");
 			if(!this.containsShip){
-				console.log("!containsShip");
 				ShipFactory.placeShip.call(this);
 				this.containsShip = true;
 			}
 		}else if(placeGuess){
-			console.log("!drawShips");
 			if(!this.containsGuess){
-				console.log("!containsGuess");
 				GuessFactory.placeGuess.call(this);
 				this.containsGuess = true;
 			}

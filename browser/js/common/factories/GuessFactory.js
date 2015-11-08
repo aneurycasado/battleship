@@ -57,7 +57,6 @@ app.factory("GuessFactory", ($rootScope,ConfigurationFactory, PlayerFactory) => 
 		PlayerFactory.player.guesses.push(this.x.toString() +","+this.y.toString())
 		container.addChild(newGuess.img);
 		let guess = this.x.toString() + "," + this.y.toString();
-		console.log("Guess in placeGuess",guess)
 		$rootScope.$emit("guessPlaced", guess);
 	}
 

@@ -6,13 +6,15 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller("HomeController", ($rootScope, $scope, GameFactory, PlayerFactory, MapFactory, ConfigurationFactory, ShipFactory, GuessFactory, SpriteEventFactory) => {
+app.controller("HomeController", ($rootScope, $timeout, $scope, GameFactory, PlayerFactory, MapFactory, ConfigurationFactory, ShipFactory, GuessFactory, SpriteEventFactory) => {
 	$scope.game = GameFactory.game;
 	$scope.player = PlayerFactory;
 	$scope.opponent = PlayerFactory.createAIOpponent();
 	$scope.gameID = null;
 	$scope.playerID = null;
 	$scope.opponentID = null;
+	$scope.gameOver = false;
+	$scope.gameOverMessage = "";
 	let renderer = PIXI.autoDetectRenderer(ConfigurationFactory.width, ConfigurationFactory.height, {})
 	$("#mainContainer").append(renderer.view);
 	let mainContainer = new PIXI.Container();
@@ -36,7 +38,6 @@ app.controller("HomeController", ($rootScope, $scope, GameFactory, PlayerFactory
 			PlayerFactory.theirTurn = true;
 			GameFactory.game.started = true;
 			$rootScope.$emit("drawShipsFalse");
-			//$scope.$digest();
 			console.log(savedGame);
 		});
 	}
@@ -53,7 +54,8 @@ app.controller("HomeController", ($rootScope, $scope, GameFactory, PlayerFactory
 		$scope.$apply();
 	});
 	$rootScope.$on("guessPlaced", (event,guess) => {
-		console.log("Guess in guessPlaced", guess);
+		PlayerFactory.theirTurn = false;
+		$rootScope.$emit("opponentsTurn");
 		let information = {
 			gameID: $scope.gameID,
 			playerID: $scope.playerID,
@@ -61,32 +63,45 @@ app.controller("HomeController", ($rootScope, $scope, GameFactory, PlayerFactory
 		}
 		GameFactory.checkGuess(information).then((hit) => {
 			if(hit){
+				PlayerFactory.shipsHit++;
+				if(PlayerFactory.shipsHit === 10){
+					$rootScope.$emit("playerWon");
+				}
 				$rootScope.$emit("rightGuess",guess)
 				console.log("Success");
 			}else{
 				$rootScope.$emit("wrongGuess",guess)
 				console.log("Failure");
 			}
-			window.setTimeout(function(){
-				PlayerFactory.theirTurn = false;
-				$rootScope.$emit("opponentsTurn");
+			$timeout(function(){
 				$scope.showShips();
-			},1000);			
+			},500);			
 		});
 	});
 	$rootScope.$on("opponentsTurn", () => {
-		window.setTimeout(function(){
-			let guess = $scope.opponent.guesses[$scope.opponent.currentGuess];	
-			$scope.opponent.currentGuess++;
-			ShipFactory.addOpponentsGuess(guess);
-		}, 1000);
-		window.setTimeout(function(){
-			PlayerFactory.theirTurn = true;
-			$rootScope.$emit("playersTurn");
-			$scope.showGuesses();
-		},2000);
+		if(!$scope.gameOver){
+			$timeout(function(){
+				let guess = $scope.opponent.guesses[$scope.opponent.currentGuess];	
+				$scope.opponent.currentGuess++;
+				ShipFactory.addOpponentsGuess(guess);
+			}, 1000);
+			$timeout(function(){
+				PlayerFactory.theirTurn = true;
+				$rootScope.$emit("playersTurn");
+				$scope.showGuesses();
+			},2000);
+		}
 	});
-
+	$rootScope.$on("playerWon", () => {
+		$rootScope.$emit("gameOver");
+		$scope.gameOver = true;
+		$scope.gameOverMessage = "Congrats You Won";
+	});
+	$rootScope.$on("opponentWon", () => {
+		$rootScope.$emit("gameOver");
+		$scope.gameOver = true;
+		$scope.gameOverMessage = "Sorry You Lost";
+	});
 	animate();
 	function animate() {
     	requestAnimationFrame(animate);

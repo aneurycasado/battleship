@@ -1,11 +1,15 @@
 <div class = "container" id = "mainContainer">
 	<h1>Battleships</h1>
-	<h2 ng-if = "player.theirTurn">Your Turn</h2>
-	<h2 ng-if = "!player.theirTurn">Opponent's Turn</h2>
+	<div class = "game.started">
+		<h2 ng-if = "player.theirTurn">Your Turn</h2>
+		<h2 ng-if = "!player.theirTurn">Opponent's Turn</h2>
+	</div>
 	<span>
 		<h2>{{game.heading}}</h2>
 		<h2 ng-if = "game.state === 'placeShips'">Ships Left: {{player.shipsToPlace}}</h2>
 		<button style = "display: block;" class = "btn btn-primary" ng-if = "game.state === 'finishedPlacing'" ng-click = "startGame()">Start Game</button>
+		<button style = "display: block;" class = "btn btn-primary" ng-if = "game.state === 'makeGuess'" ng-click = "showShips()">Show Ships</button>
+		<button style = "display: block;" class = "btn btn-primary" ng-if = "game.state === 'makeGuess'" ng-click = "showGuesses()">Show Guesses</button>
 	</span>
 
 </div>

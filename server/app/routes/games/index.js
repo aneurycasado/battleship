@@ -5,13 +5,12 @@ let mongoose = require('mongoose');
 let Game = mongoose.model('Game');
 let Player = mongoose.model('Player');
 router.get("/:id", (req,res) => {
-	let gameID = req.params.id 
+	let gameID = req.params.id; 
 	Game.findOne({_id: gameID})
 	.then((game) => {
 		res.json(game);
 	});
 })
-
 router.post("/", (req,res) => {
 	let player = req.body.player; 
 	let opponent = req.body.opponent;
@@ -31,4 +30,27 @@ router.post("/", (req,res) => {
 	.then((savedGame) => {
 		res.json(savedGame);
 	})
+})
+router.put("/:id", (req,res) => {
+	let gameID = req.params.id;
+	let guess = req.body.guess;
+	console.log("The guess",guess);
+	let hit = false;
+	Game.findOne({_id: gameID}).populate("player opponent")
+	.then((game) => {
+		let player = game.player;
+		let opponent = game.opponent;
+		player.guesses.push(guess);
+		console.log("Guess",guess);
+		console.log("Opponent ships", opponent.ships)
+		if(opponent.ships.indexOf(guess) !== -1){
+			hit = true;
+		}else{
+			hit = false;
+		}
+		return player.save();
+	})
+	.then((savedPlayer) => {
+		res.json(hit);
+	});
 })

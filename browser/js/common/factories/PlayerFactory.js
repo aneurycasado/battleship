@@ -26,6 +26,7 @@ app.factory("PlayerFactory", () => {
 		return {
 			ships,
 			guesses,
+			currentGuess: 0
 		}
 	}
 	return {

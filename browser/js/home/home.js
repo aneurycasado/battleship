@@ -6,11 +6,14 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller("HomeController", ($scope, GameFactory, MapFactory, ConfigurationFactory) => {
-	let renderer = PIXI.autoDetectRenderer(ConfigurationFactory.width, ConfigurationFactory.height, {backgroundColor : 0x1099bb})
+app.controller("HomeController", ($scope, GameFactory, PlayerFactory, MapFactory, ConfigurationFactory, ShipFactory, GuessFactory) => {
+	let renderer = PIXI.autoDetectRenderer(ConfigurationFactory.width, ConfigurationFactory.height, {})
 	$("#mainContainer").append(renderer.view);
 	let mainContainer = new PIXI.Container();
-	mainContainer.addChild(MapFactory.map.container);
+	mainContainer.addChild(MapFactory.yourMap.container);
+	mainContainer.addChild(MapFactory.opponentMap.container);
+	mainContainer.addChild(ShipFactory.container);
+	mainContainer.addChild(GuessFactory.container);
 	animate();
 	function animate() {
     	requestAnimationFrame(animate);

@@ -1,5 +1,6 @@
 app.factory('MapFactory', (ConfigurationFactory, ShipFactory, SpriteEventFactory) => {
-	let map;
+	let yourMap;
+	let opponentMap;
 	let grid = [
 					[0,0,0,0,0], 
 					[0,0,0,0,0], 
@@ -11,29 +12,36 @@ app.factory('MapFactory', (ConfigurationFactory, ShipFactory, SpriteEventFactory
 		constructor(x,y,opts){
 			this.x = x; 
 			this.y = y;
-			this.coords = {x: x * ConfigurationFactory.cellSize, y: y * ConfigurationFactory.cellSize};
-			this.containsShip = false;
-			this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background/tile.png"));
+			this.initialPosition = opts.initialPosition
+			this.coords = {x: x * ConfigurationFactory.mapSettings.cellSize, y: y * ConfigurationFactory.mapSettings.cellSize};
+			
+			this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background/tile.jpeg"));
 			this.img.interactive = true;
-			this.img.click = ShipFactory.canPlaceShip.bind(this);
+			if(opts.initialPosition === 0){
+				this.containsShip = false;
+				this.img.click = SpriteEventFactory.clickOnGridNodeShip.bind(this);
+			}else{
+				this.containsGuess = false;
+				this.img.click = SpriteEventFactory.clickOnGridNodeGuess.bind(this)
+			}
 			this.img.mouseover = SpriteEventFactory.mouseOverGridNode.bind(this);
 			this.img.mouseout = SpriteEventFactory.mouseOutGridNode.bind(this);
 			this.img.position.x = this.coords.x;
 	        this.img.position.y = this.coords.y;
-	        this.img.texture.width = ConfigurationFactory.cellSize; 
-			this.img.width = ConfigurationFactory.cellSize;
-			this.img.height = ConfigurationFactory.cellSize;
+	        this.img.texture.width = ConfigurationFactory.mapSettings.cellSize; 
+			this.img.width = ConfigurationFactory.mapSettings.cellSize;
+			this.img.height = ConfigurationFactory.mapSettings.cellSize;
 		}
 	}
 
-	const insertNodes = (grid, map) => {
+	const insertNodes = (grid, map, opts) => {
 		let newGrid = grid.slice();
 		newGrid.forEach((row) => {
 			row = row.slice();
 		})
 		for(let row = 0; row < newGrid.length; row++){
 			for(let col = 0; col < newGrid[row].length; col++){
-				newGrid[row][col] = new GridNode(col,row)
+				newGrid[row][col] = new GridNode(col,row, opts)
 				map.container.addChild(newGrid[row][col].img)
 			}
 		}
@@ -41,17 +49,22 @@ app.factory('MapFactory', (ConfigurationFactory, ShipFactory, SpriteEventFactory
 	}
 
 	class Map{
-		constructor(grid){
+		constructor(grid, opts){
 			this.container = new PIXI.Container();
-			this.grid = insertNodes(grid,this)
+			this.grid = insertNodes(grid,this, opts)
 		}
 	}
 
 	const init = () => {
-		map = new Map(grid)
+		yourMap = new Map(grid, {initialPosition: 0});
+		let displacement = ConfigurationFactory.mapSettings.width + ConfigurationFactory.mapSettings.cellSize;
+		opponentMap = new Map(grid, {initialPosition: displacement});
+		opponentMap.container.x = ConfigurationFactory.mapSettings.width + ConfigurationFactory.mapSettings.cellSize;
 	}
+
 	init();
 	return {
-		map,
+		yourMap,
+		opponentMap,
 	}
 });

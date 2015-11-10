@@ -9,7 +9,7 @@ let Player = mongoose.model('Player');
 //Get the game
 router.get("/:id", (req,res) => {
 	let gameID = req.params.id; 
-	Game.findOne({_id: gameID}).populate("player opponent")
+	Game.findOne({_id: gameID})
 	.then((game) => {
 		res.status(200).json(game);
 	});

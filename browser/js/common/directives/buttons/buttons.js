@@ -1,3 +1,8 @@
+// This directive controls the three buttons in the game:
+// Start Game - Hits the server and creates a new game
+// Show Ships - Shows the player's ships
+// Show Guesses - Shows the player's guesses
+
 app.directive('buttons', () => {
 	return {
 		restrict: "E",

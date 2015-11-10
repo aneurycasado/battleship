@@ -1,3 +1,6 @@
+//This file acts as the main controller for the game.
+//It listens for events and changes the state of the game accordingly
+
 app.config(($stateProvider) => {
     $stateProvider.state('home', {
         url: '/',
@@ -25,12 +28,17 @@ app.controller("HomeController", ($rootScope, $timeout, $scope, Game, Player, Ma
 	$rootScope.$on("opponentPlayed", EventFunction.opponentPlayed.bind(null,$scope));
 	$rootScope.$on("playerWon", EventFunction.playerWon.bind(null,$scope));
 	$rootScope.$on("opponentWon", EventFunction.opponentWon.bind(null,$scope)); 
+//This is PIXI code that creates a canvas and adds all the elements within the factories to the 
+//canvas. I then start a loop that is constantly updating the canvas with any changes
 	let renderer = PIXI.autoDetectRenderer(Configuration.width, Configuration.height, {})
+//Add canvas to DOM
 	$("#mainContainer").append(renderer.view);
 	let mainContainer = new PIXI.Container();
+//Add the map, the ships and the guesses
 	mainContainer.addChild(Map.map.container);
 	mainContainer.addChild(Ship.container);
 	mainContainer.addChild(Guess.container);
+//Animate loop
 	animate();
 	function animate() {
     	requestAnimationFrame(animate);

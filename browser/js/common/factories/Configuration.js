@@ -1,3 +1,4 @@
+//This factory defines the basic settings of the canvas
 app.factory('Configuration', () => {
 	let canvasSettings = {
 		width: $(window).width()/2,

@@ -1,8 +1,11 @@
+//This factory defines the functions that run when certain events are fired by the game
+
 app.factory("EventFunction", ($rootScope, $timeout, Player, Game, Ship) => {
 	const shipPlaced = function(scope) {
 		scope.$apply();
 	}
-
+//When a user places a guess, the game hits the server and verifies this guess against 
+//the information contained for an opponents ships.
 	const guessPlaced = (guess,scope) => {
 		Player.theirTurn = false;
 		let information = {

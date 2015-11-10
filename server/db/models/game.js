@@ -1,3 +1,5 @@
+//This is the game model that contains a reference
+//to the player and opponent
 var mongoose = require('mongoose');
 var schema = new mongoose.Schema({
 	player: {

@@ -1,6 +1,5 @@
-// Require our models -- these should register the model into mongoose
+// Require our models -- these register the model into mongoose
 // so the rest of the application can simply call mongoose.model('User')
-// anywhere the User model needs to be used.
-require('./user');
+// anywhere the model needs to be used.
 require('./game');
 require('./player');

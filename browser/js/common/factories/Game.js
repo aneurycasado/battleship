@@ -1,4 +1,4 @@
-app.factory("GameFactory", ($rootScope, PlayerFactory, $http) => {
+app.factory("Game", ($rootScope, Player, $http) => {
 	let game = {
 		state: "placeShips",
 		heading: "Place Ships",
@@ -6,10 +6,10 @@ app.factory("GameFactory", ($rootScope, PlayerFactory, $http) => {
 	};
 	let gameID = null; 
 	$rootScope.$on("shipPlaced", () => {
-		if(PlayerFactory.shipsToPlace === 0){
+		if(Player.shipsToPlace === 0){
 			game.state = "finishedPlacing";
 			game.heading = "You have no more ships to place. Begin the game!";
-			PlayerFactory.theirTurn = false;
+			Player.theirTurn = false;
 		}
 	});
 

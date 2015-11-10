@@ -1,30 +1,30 @@
-app.factory("EventFunctionFactory", ($rootScope, $timeout, PlayerFactory,GameFactory,ShipFactory) => {
+app.factory("EventFunction", ($rootScope, $timeout, Player, Game, Ship) => {
 	const shipPlaced = function(scope) {
 		scope.$apply();
 	}
 
 	const guessPlaced = (guess,scope) => {
-		PlayerFactory.theirTurn = false;
-		$rootScope.$emit("opponentsTurn");
+		Player.theirTurn = false;
 		let information = {
 			gameID: scope.gameID,
 			playerID: scope.playerID,
 			guess: guess
 		}
-		GameFactory.checkGuess(information).then((hit) => {
+		Game.checkGuess(information).then((hit) => {
 			if(hit){
-				PlayerFactory.shipsHit++;
-				if(PlayerFactory.shipsHit === 10){
+				scope.game.heading = "You Hit the Opponent's Ship"; 
+				Player.shipsHit++;
+				if(Player.shipsHit === 10){
 					$rootScope.$emit("playerWon");
 				}
 				$rootScope.$emit("rightGuess",guess)
-				console.log("Success");
 			}else{
+				scope.game.heading = "You Missed the Opponent's Ship";
 				$rootScope.$emit("wrongGuess",guess)
-				console.log("Failure");
 			}
 			$timeout(function(){
 				scope.showShips();
+				$rootScope.$emit("opponentsTurn");
 			},500);			
 		});
 	}
@@ -34,34 +34,51 @@ app.factory("EventFunctionFactory", ($rootScope, $timeout, PlayerFactory,GameFac
 			$timeout(function(){
 				let guess = scope.opponent.guesses[scope.opponent.currentGuess];	
 				scope.opponent.currentGuess++;
-				ShipFactory.addOpponentsGuess(guess);
+				Ship.addOpponentsGuess(guess);
+				$rootScope.$emit("opponentPlayed");
 			}, 1000);
+		}
+	
+	}
+
+	const opponentHit = function(scope){
+		scope.game.heading = "The Opponent Hit Your Ship"
+	}
+
+	const opponentMissed = function(scope){
+		scope.game.heading = "The Opponent Missed Your Ship"
+	}
+
+	const opponentPlayed = function(scope){
+		if(!scope.gameOver){
 			$timeout(function(){
-				PlayerFactory.theirTurn = true;
+				Player.theirTurn = true;
 				$rootScope.$emit("playersTurn");
 				scope.showGuesses();
-			},2000);
+			},1000);
 		}
 	}
 
 	const playerWon = function(scope) {
 		$rootScope.$emit("gameOver");
 		scope.gameOver = true;
-		scope.gameOverMessage = "Congrats You Won";
+		scope.game.heading = "Congrats You Won";
 	}
 
 	const opponentWon = function(scope) {
+		console.log("Called");
 		$rootScope.$emit("gameOver");
 		scope.gameOver = true;
-		scope.gameOverMessage = "Sorry You Lost";
+		scope.game.heading = "Sorry You Lost";
 	}
-
 	return {
 		shipPlaced,
 		guessPlaced,
 		opponentsTurn,
+		opponentHit,
+		opponentMissed,
+		opponentPlayed,
 		playerWon,
 		opponentWon
 	}
-
 })

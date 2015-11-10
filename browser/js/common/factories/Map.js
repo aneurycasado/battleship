@@ -1,4 +1,4 @@
-app.factory('MapFactory', (ConfigurationFactory, ShipFactory, SpriteEventFactory) => {
+app.factory('Map', (Configuration, Ship, SpriteEvent) => {
 	let map;
 	let grid = [
 					[0,0,0,0,0], 
@@ -11,17 +11,17 @@ app.factory('MapFactory', (ConfigurationFactory, ShipFactory, SpriteEventFactory
 		constructor(x,y){
 			this.x = x; 
 			this.y = y;
-			this.coords = {x: x * ConfigurationFactory.mapSettings.cellSize, y: y * ConfigurationFactory.mapSettings.cellSize};
+			this.coords = {x: x * Configuration.mapSettings.cellSize, y: y * Configuration.mapSettings.cellSize};
 			this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tile.png"));
 			this.img.interactive = true;
-			this.img.click = SpriteEventFactory.clickOnGridNode.bind(this);
-			this.img.mouseover = SpriteEventFactory.mouseOverGridNode.bind(this);
-			this.img.mouseout = SpriteEventFactory.mouseOutGridNode.bind(this);
+			this.img.click = SpriteEvent.clickOnGridNode.bind(this);
+			this.img.mouseover = SpriteEvent.mouseOverGridNode.bind(this);
+			this.img.mouseout = SpriteEvent.mouseOutGridNode.bind(this);
 			this.img.position.x = this.coords.x;
 	        this.img.position.y = this.coords.y;
-	        this.img.texture.width = ConfigurationFactory.mapSettings.cellSize; 
-			this.img.width = ConfigurationFactory.mapSettings.cellSize;
-			this.img.height = ConfigurationFactory.mapSettings.cellSize;
+	        this.img.texture.width = Configuration.mapSettings.cellSize; 
+			this.img.width = Configuration.mapSettings.cellSize;
+			this.img.height = Configuration.mapSettings.cellSize;
 		}
 	}
 

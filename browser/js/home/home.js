@@ -6,28 +6,31 @@ app.config(($stateProvider) => {
     });
 });
 
-app.controller("HomeController", ($rootScope, $timeout, $scope, GameFactory, PlayerFactory, MapFactory, ConfigurationFactory, ShipFactory, GuessFactory, SpriteEventFactory, EventFunctionFactory) => {
-	$scope.game = GameFactory.game;
-	$scope.player = PlayerFactory;
-	$scope.opponent = PlayerFactory.createAIOpponent();
+app.controller("HomeController", ($rootScope, $timeout, $scope, Game, Player, Map, Configuration, Ship, Guess, SpriteEvent, EventFunction) => {
+	$scope.game = Game.game;
+	$scope.player = Player;
+	$scope.opponent = Player.createAIOpponent();
 	$scope.gameID = null;
 	$scope.playerID = null;
 	$scope.opponentID = null;
 	$scope.gameOver = false;
 	$scope.gameOverMessage = "";
-	$rootScope.$on("shipPlaced", EventFunctionFactory.shipPlaced.bind(null,$scope));
+	$rootScope.$on("shipPlaced", EventFunction.shipPlaced.bind(null,$scope));
 	$rootScope.$on("guessPlaced", function(event,guess){
-		EventFunctionFactory.guessPlaced(guess,$scope)
+		EventFunction.guessPlaced(guess,$scope)
 	});
-	$rootScope.$on("opponentsTurn", EventFunctionFactory.opponentsTurn.bind(null,$scope)); 
-	$rootScope.$on("playerWon", EventFunctionFactory.playerWon.bind(null,$scope));
-	$rootScope.$on("opponentWon", EventFunctionFactory.opponentWon.bind(null,$scope)); 
-	let renderer = PIXI.autoDetectRenderer(ConfigurationFactory.width, ConfigurationFactory.height, {})
+	$rootScope.$on("opponentsTurn", EventFunction.opponentsTurn.bind(null,$scope)); 
+	$rootScope.$on("opponentHit", EventFunction.opponentHit.bind(null,$scope));
+	$rootScope.$on("opponentMissed", EventFunction.opponentMissed.bind(null,$scope));
+	$rootScope.$on("opponentPlayed", EventFunction.opponentPlayed.bind(null,$scope));
+	$rootScope.$on("playerWon", EventFunction.playerWon.bind(null,$scope));
+	$rootScope.$on("opponentWon", EventFunction.opponentWon.bind(null,$scope)); 
+	let renderer = PIXI.autoDetectRenderer(Configuration.width, Configuration.height, {})
 	$("#mainContainer").append(renderer.view);
 	let mainContainer = new PIXI.Container();
-	mainContainer.addChild(MapFactory.map.container);
-	mainContainer.addChild(ShipFactory.container);
-	mainContainer.addChild(GuessFactory.container);
+	mainContainer.addChild(Map.map.container);
+	mainContainer.addChild(Ship.container);
+	mainContainer.addChild(Guess.container);
 	animate();
 	function animate() {
     	requestAnimationFrame(animate);

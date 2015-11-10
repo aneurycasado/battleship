@@ -6,32 +6,35 @@ app.directive('buttons', () => {
 	}
 })
 
-app.controller('ButtonsController', ($rootScope,$scope, PlayerFactory, ShipFactory, GameFactory, GuessFactory) => {
+app.controller('ButtonsController', ($rootScope,$scope, Player, Ship, Game, Guess) => {
 	$scope.startGame = () => {
 		let opponent = $scope.opponent;
-		let player = PlayerFactory.player;
+		let player = Player.player;
 		let game = {
 			opponent: opponent,
 			player: player
 		}
-		GameFactory.createGame(game).then((savedGame) => {
+		Game.createGame(game).then((savedGame) => {
 			$scope.gameID = savedGame._id;
 			$scope.playerID = savedGame.player;
 			$scope.opponentID = savedGame.opponent;
-			ShipFactory.container.removeChildren();
-			GameFactory.game.state = "makeGuess";
-			GameFactory.game.heading = "Make a Guess";
-			PlayerFactory.theirTurn = true;
-			GameFactory.game.started = true;
+			Ship.container.removeChildren();
+			Game.game.state = "makeGuess";
+			Game.game.heading = "Make a Guess";
+			Player.theirTurn = true;
+			Game.game.started = true;
 			$rootScope.$emit("drawShipsFalse");
 		});
 	}
 	$scope.showShips = () => {
-		GuessFactory.container.removeChildren();
-		ShipFactory.redrawShips();
+		$rootScope.$emit("showShipsView");
+		Guess.container.removeChildren();
+		Ship.redrawShips();
+
 	}
 	$scope.showGuesses = () => {
-		ShipFactory.container.removeChildren();
-		GuessFactory.redrawGuesses();
+		$rootScope.$emit("showGuessesView");
+		Ship.container.removeChildren();
+		Guess.redrawGuesses();
 	}
 })

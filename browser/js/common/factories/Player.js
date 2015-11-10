@@ -1,4 +1,4 @@
-app.factory("PlayerFactory", () => {
+app.factory("Player", () => {
 	let shipsToPlace = 10;
 	let shipsHit = 0;
 	let shipsLeft = 10;

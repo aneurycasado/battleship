@@ -1,26 +1,26 @@
-app.factory("GuessFactory", ($rootScope,ConfigurationFactory, PlayerFactory) => {
+app.factory("Guess", ($rootScope, Configuration, Player) => {
 	let guesses = [];
 	let results = [];
 	let container = new PIXI.Container();
 	class Guess{
 		constructor(x,y){
 			this.position = {x: x, y: y};
-			let imgPosition = [this.position.x * ConfigurationFactory.mapSettings.cellSize + (ConfigurationFactory.mapSettings.cellSize/2), this.position.y * ConfigurationFactory.mapSettings.cellSize + (ConfigurationFactory.mapSettings.cellSize/2)]
+			let imgPosition = [this.position.x * Configuration.mapSettings.cellSize + (Configuration.mapSettings.cellSize/2), this.position.y * Configuration.mapSettings.cellSize + (Configuration.mapSettings.cellSize/2)]
 			this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/bullseye.png"));
 			this.img.position.x = imgPosition[0]
 			this.img.position.y = imgPosition[1];
 			this.img.anchor.x = .5; 
 			this.img.anchor.y = .5;
-			this.img.texture.width = ConfigurationFactory.mapSettings.cellSize; 
-			this.img.width = ConfigurationFactory.mapSettings.cellSize;
-			this.img.height = ConfigurationFactory.mapSettings.cellSize;
+			this.img.texture.width = Configuration.mapSettings.cellSize; 
+			this.img.width = Configuration.mapSettings.cellSize;
+			this.img.height = Configuration.mapSettings.cellSize;
 		}
 	}
 
 	class Result{
 		constructor(x,y,opts){
 			this.position = {x: x, y: y};
-			let imgPosition = [this.position.x * ConfigurationFactory.mapSettings.cellSize + (ConfigurationFactory.mapSettings.cellSize/2), this.position.y * ConfigurationFactory.mapSettings.cellSize + (ConfigurationFactory.mapSettings.cellSize/2)]
+			let imgPosition = [this.position.x * Configuration.mapSettings.cellSize + (Configuration.mapSettings.cellSize/2), this.position.y * Configuration.mapSettings.cellSize + (Configuration.mapSettings.cellSize/2)]
 			if(opts.success){
 				this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/check.png"));
 			}else{
@@ -30,9 +30,9 @@ app.factory("GuessFactory", ($rootScope,ConfigurationFactory, PlayerFactory) => 
 			this.img.position.y = imgPosition[1];
 			this.img.anchor.x = .5; 
 			this.img.anchor.y = .5;
-			this.img.texture.width = ConfigurationFactory.mapSettings.cellSize/2; 
-			this.img.width = ConfigurationFactory.mapSettings.cellSize/2;
-			this.img.height = ConfigurationFactory.mapSettings.cellSize/2;
+			this.img.texture.width = Configuration.mapSettings.cellSize/2; 
+			this.img.width = Configuration.mapSettings.cellSize/2;
+			this.img.height = Configuration.mapSettings.cellSize/2;
 		}
 	}
 
@@ -53,8 +53,9 @@ app.factory("GuessFactory", ($rootScope,ConfigurationFactory, PlayerFactory) => 
 	const placeGuess = function(){
 		let newGuess = new Guess(this.x, this.y);
 		guesses.push(newGuess);
-		PlayerFactory.player.guesses.push(this.x.toString() +","+this.y.toString())
+		Player.player.guesses.push(this.x.toString() +","+this.y.toString())
 		container.addChild(newGuess.img);
+		this.containsGuess = true;
 		let guess = this.x.toString() + "," + this.y.toString();
 		$rootScope.$emit("guessPlaced", guess);
 	}

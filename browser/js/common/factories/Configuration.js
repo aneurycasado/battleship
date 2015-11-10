@@ -1,4 +1,4 @@
-app.factory('ConfigurationFactory', () => {
+app.factory('Configuration', () => {
 	let canvasSettings = {
 		width: $(window).width()/2,
 		rows: 5,

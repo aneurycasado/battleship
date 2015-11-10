@@ -7,6 +7,7 @@ app.factory("EventFunction", ($rootScope, $timeout, Player, Game, Ship) => {
 //When a user places a guess, the game hits the server and verifies this guess against 
 //the information contained for an opponents ships.
 	const guessPlaced = (guess,scope) => {
+		$rootScope.$emit("doneGuessing");
 		Player.theirTurn = false;
 		let information = {
 			gameID: scope.gameID,

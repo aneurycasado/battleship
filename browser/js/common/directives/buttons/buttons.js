@@ -28,7 +28,7 @@ app.controller('ButtonsController', ($rootScope,$scope, Player, Ship, Game, Gues
 			Game.game.heading = "Make a Guess";
 			Player.theirTurn = true;
 			Game.game.started = true;
-			$rootScope.$emit("drawShipsFalse");
+			$rootScope.$emit("placeFirstGuess");
 		});
 	}
 	$scope.showShips = () => {

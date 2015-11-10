@@ -2,10 +2,9 @@ app.factory("SpriteEvent", ($rootScope, Ship, Guess, ColorFilter) => {
 	let drawShips = true;
 	let placeGuess = false;
 	let opponentsTurn = false;
-	$rootScope.$on("drawShipsFalse", () => {
-		drawShips = false;
-		placeGuess = true;
-	});
+	$rootScope.$on("noMoreShips", () => drawShips = false);
+	$rootScope.$on("placeFirstGuess", () => placeGuess = true);
+	$rootScope.$on("doneGuessing", () => placeGuess = false);
 	$rootScope.$on("opponentsTurn", () => placeGuess = false);
 	$rootScope.$on("playersTurn", () => placeGuess = true);
 	$rootScope.$on("gameOver", () => placeGuess = false);
@@ -13,6 +12,7 @@ app.factory("SpriteEvent", ($rootScope, Ship, Guess, ColorFilter) => {
 	$rootScope.$on("showGuessesView", () => {
 		if(!opponentsTurn) placeGuess = true
 	});
+
 	const clickOnGridNode = function(){
 		if(drawShips){
 			if(!this.containsShip) Ship.placeShip.call(this);

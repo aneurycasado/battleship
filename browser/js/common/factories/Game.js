@@ -8,6 +8,7 @@ app.factory("Game", ($rootScope, Player, $http) => {
 	$rootScope.$on("shipPlaced", () => {
 		if(Player.shipsToPlace === 0){
 			game.state = "finishedPlacing";
+			$rootScope.$emit("noMoreShips");
 			game.heading = "You have no more ships to place. Begin the game!";
 			Player.theirTurn = false;
 		}

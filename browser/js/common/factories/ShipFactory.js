@@ -6,14 +6,14 @@ app.factory("ShipFactory", ($rootScope, PlayerFactory, ConfigurationFactory, Gam
 		constructor(x,y){
 			this.position = {x: x, y: y};
 			let imgPosition = [this.position.x * ConfigurationFactory.mapSettings.cellSize + (ConfigurationFactory.mapSettings.cellSize/2), this.position.y * ConfigurationFactory.mapSettings.cellSize + (ConfigurationFactory.mapSettings.cellSize/2)]
-			this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/circle.png"));
+			this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/battleship.png"));
 			this.img.position.x = imgPosition[0];
 			this.img.position.y = imgPosition[1];
 			this.img.anchor.x = .5; 
 			this.img.anchor.y = .5;
-			this.img.texture.width = ConfigurationFactory.mapSettings.cellSize/2; 
-			this.img.width = ConfigurationFactory.mapSettings.cellSize/2;
-			this.img.height = ConfigurationFactory.mapSettings.cellSize/2;
+			this.img.texture.width = ConfigurationFactory.mapSettings.cellSize; 
+			this.img.width = ConfigurationFactory.mapSettings.cellSize;
+			this.img.height = ConfigurationFactory.mapSettings.cellSize;
 		}
 	}
 

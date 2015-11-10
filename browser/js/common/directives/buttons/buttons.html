@@ -1,0 +1,9 @@
+<div class = "row">
+	<div class = "col-xs-12">
+		<div class = "btn-group"> 	
+			<button class = "btn btn-lg btn-primary" ng-if = "game.state === 'finishedPlacing'" ng-click = "startGame()">Start Game</button>
+			<button class = "btn btn-lg btn-primary" ng-if = "game.state === 'makeGuess'" ng-click = "showShips()">Show Ships</button>
+			<button class = "btn btn-lg btn-primary" ng-if = "game.state === 'makeGuess'" ng-click = "showGuesses()">Show Guesses</button>
+		</div>
+	</div>
+</div>

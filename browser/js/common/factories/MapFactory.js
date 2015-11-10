@@ -12,7 +12,7 @@ app.factory('MapFactory', (ConfigurationFactory, ShipFactory, SpriteEventFactory
 			this.x = x; 
 			this.y = y;
 			this.coords = {x: x * ConfigurationFactory.mapSettings.cellSize, y: y * ConfigurationFactory.mapSettings.cellSize};
-			this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/background/tile.jpeg"));
+			this.img = new PIXI.Sprite(PIXI.Texture.fromImage("/images/tile.png"));
 			this.img.interactive = true;
 			this.img.click = SpriteEventFactory.clickOnGridNode.bind(this);
 			this.img.mouseover = SpriteEventFactory.mouseOverGridNode.bind(this);

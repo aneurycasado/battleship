@@ -1,12 +1,29 @@
-#home {
-  fullstack-logo {
-    padding-top: 30px;
-    width: 150px;
-    margin: 0 auto;
-  }
+#mainContainer {
   h1 {
-    margin-top: 40px;
-    text-align: center;
+    font-size: 5em;
+    color: white;
+    margin: 10px;
   }
+  h2 {
+  	font-size: 2.5em;
+  	color: white;
+  	margin: 10px;
+  }
+
+  btn {
+  	margin: 10px;
+  }
+
+  .yourTurn {
+  	color: green;
+  	font-size: 4em;
+  }
+
+  .opponentTurn {
+  	color: red;
+  	font-size: 4em;
+  }
+
+  text-align: center;
 }
 

@@ -1,36 +1,10 @@
 <div class = "container" id = "mainContainer">
 	<h1>Battleships</h1>
 	<div class = "row" >
-		<div class = "col-xs-12">
-			<div class = "row">
-				<div class = "col-xs-6" ng-if = "game.started">
-					<h2 ng-if = "player.theirTurn">Your Turn</h2>
-					<h2 ng-if = "!player.theirTurn">Opponent's Turn</h2>
-				</div>
-				<div class = "col-xs-6">
-					<h2>{{game.heading}}</h2>
-					<h2 ng-if = "game.state === 'placeShips'">Ships Left: {{player.shipsToPlace}}</h2>
-				</div>
-			</div>
-			<div class = "row">
-				<div class = "col-xs-12">
-					<div class = "btn-group"> 	
-						<button class = "btn btn-primary" ng-if = "game.state === 'finishedPlacing'" ng-click = "startGame()">Start Game</button>
-						<button class = "btn btn-primary" ng-if = "game.state === 'makeGuess'" ng-click = "showShips()">Show Ships</button>
-						<button class = "btn btn-info" ng-if = "game.state === 'makeGuess'" ng-click = "showGuesses()">Show Guesses</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<current-state></current-state>
+		<buttons></buttons>
 	</div>
-	<div class = "row" ng-if = "game.started">
-		<div class = "col-xs-6">
-			<h2>Ships Left: {{player.shipsLeft}}</h2>
-		</div>
-		<div class = "col-xs-6">
-			<h2>Ships Hit: {{player.shipsHit}}</h2>
-		</div>
-	</div>
+	<player-information></player-information>
 	<div class ="gameOver" ng-if = "gameOver">
 		<h2>{{gameOverMessage}}</h2>
 	</div>
